@@ -9,6 +9,8 @@ import com.encentral.test_project.commons.exceptions.ResourceNotFound;
 import com.encentral.test_project.entities.JpaCar;
 import com.encentral.test_project.user_management.api.CarService;
 import java.util.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 import play.db.jpa.JPAApi;
 
@@ -21,6 +23,11 @@ public class DefaultCarService implements CarService
 
     @Inject
     JPAApi jPAApi;
+    
+    @Override
+    public List<JpaCar> findAll() {
+    	return jPAApi.em().createQuery("SELECT c FROM JpaCar c", JpaCar.class).getResultList();
+    }
 
     @Override
     public JpaCar find(String carId) throws ResourceNotFound 

@@ -5,6 +5,8 @@
  */
 package com.encentral.test_project.user_management.api;
 
+import java.util.List;
+
 import com.encentral.test_project.commons.exceptions.ResourceNotFound;
 import com.encentral.test_project.entities.JpaCar;
 
@@ -15,6 +17,8 @@ import com.encentral.test_project.entities.JpaCar;
 public interface CarService 
 {
     
+	List<JpaCar> findAll();
+	
     JpaCar find(String carId) throws ResourceNotFound;
 
     JpaCar create(JpaCar carDO) ;
@@ -22,5 +26,5 @@ public interface CarService
     void delete(String carId) throws ResourceNotFound;
 	
 	JpaCar update(JpaCar carDO) throws ResourceNotFound;
-
+	
 }

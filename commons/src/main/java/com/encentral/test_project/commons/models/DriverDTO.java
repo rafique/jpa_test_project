@@ -29,6 +29,8 @@ public class DriverDTO
 	
     private Date dateModiied;
 
+	private CarDTO car;
+
     public String getDriverId() {
         return driverId;
     }
@@ -77,5 +79,13 @@ public class DriverDTO
     public void setOnlineStatus(String onlineStatus) {
         this.onlineStatus = onlineStatus;
     }
+
+	public void setCar(CarDTO car) {
+		this.car = car;
+	}
+	
+	public CarDTO getCar() {
+		return car;
+	}
 
 }

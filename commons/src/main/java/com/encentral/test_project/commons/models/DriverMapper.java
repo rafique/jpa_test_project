@@ -21,6 +21,10 @@ public class DriverMapper {
         dTO.setUsername(jpaDriver.getUsername());
         dTO.setPassword(jpaDriver.getPassword());
         dTO.setOnlineStatus(jpaDriver.getOnlineStatus());
+        
+        if (jpaDriver.getCar() != null) {
+        	dTO.setCar(CarMapper.jpaCarToCarDTO(jpaDriver.getCar()));
+        }
         return dTO;
     }
 
