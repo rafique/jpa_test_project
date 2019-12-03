@@ -10,9 +10,11 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -64,6 +66,9 @@ public class JpaDriver implements Serializable
     @Column(name = "date_modified")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateModiied;
+
+    @OneToOne(optional = true, fetch = FetchType.EAGER)
+	private JpaCar car;
 
     public String getDriverId() 
 	{
@@ -134,5 +139,13 @@ public class JpaDriver implements Serializable
 	{
         this.onlineStatus = onlineStatus;
     }
+
+	public void setCar(JpaCar car) {
+		this.car = car;
+	}
+	
+	public JpaCar getCar() {
+		return car;
+	}
 
 }

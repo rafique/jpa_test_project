@@ -5,8 +5,13 @@
  */
 package com.encentral.test_project.user_management.api;
 
+import java.util.List;
+
 import com.encentral.test_project.commons.exceptions.ResourceNotFound;
+import com.encentral.test_project.entities.JpaCar;
 import com.encentral.test_project.entities.JpaDriver;
+
+import play.twirl.api.Content;
 
 /**
  *
@@ -20,5 +25,23 @@ public interface DriverService
     JpaDriver create(JpaDriver driverDO) ;
 
     void delete(String driverId) throws ResourceNotFound;
+
+    /**
+     * Assigns a car to a driver.
+     * 
+     * @param driverId
+     * @param carId
+     * @return
+     * @throws ResourceNotFound 
+     */
+	JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound;
+	
+	
+	/**
+	 * Finds all drivers. Only for test purpose.
+	 * 
+	 * @return
+	 */
+	List<JpaDriver> findAll();
 
 }

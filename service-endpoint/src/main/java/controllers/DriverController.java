@@ -6,6 +6,8 @@
 package controllers;
 
 import com.encentral.test_project.commons.exceptions.ResourceNotFound;
+import com.encentral.test_project.commons.models.CarDTO;
+import com.encentral.test_project.commons.models.CarMapper;
 import com.encentral.test_project.commons.models.DriverDTO;
 import com.encentral.test_project.commons.models.DriverMapper;
 import com.encentral.test_project.commons.util.MyObjectMapper;
@@ -43,6 +45,41 @@ public class DriverController extends Controller
 
     @Inject
     DriverService driverService;
+    
+    
+    @ApiOperation(value = "Assigns a Car to a Driver", notes = "", httpMethod = "GET")
+    @ApiResponses
+	(
+            value = {
+						@ApiResponse(code = 200, message = "Done", response = DriverDTO.class)
+					}
+    )
+    public Result assignCar(String driverId, String carId) 
+	{
+        try 
+		{
+            return ok(Json.toJson(DriverMapper.jpaDriverToDriverDTO(driverService.assignCar(driverId, carId))));
+            
+        } 
+		catch (ResourceNotFound ex) 
+		{
+            return notFound(ex.getMessage());
+        }
+    }
+    
+    @ApiOperation(value = "Find Drivers", notes = "Find Driver endpoint", httpMethod = "GET")
+    @ApiResponses
+	(
+            value = {
+						@ApiResponse(code = 200, message = "Done", response = CarDTO.class)
+					}
+    )
+    
+    public Result findDriver() 
+	{
+           return ok(Json.toJson(driverService.findAll().stream().map(DriverMapper::jpaDriverToDriverDTO)));
+    }
+    
 
     @ApiOperation(value = "Get Driver", notes = "", httpMethod = "GET")
     @ApiResponses

@@ -6,9 +6,13 @@
 package com.encentral.test_project.user_management.impl;
 
 import com.encentral.test_project.commons.exceptions.ResourceNotFound;
+import com.encentral.test_project.entities.JpaCar;
 import com.encentral.test_project.entities.JpaDriver;
+import com.encentral.test_project.user_management.api.CarService;
 import com.encentral.test_project.user_management.api.DriverService;
 import java.util.Date;
+import java.util.List;
+
 import javax.inject.Inject;
 import play.db.jpa.JPAApi;
 
@@ -21,6 +25,15 @@ public class DefaultDriverService implements DriverService
 
     @Inject
     JPAApi jPAApi;
+    
+    @Inject 
+    CarService carService;
+    
+    @Override
+    public List<JpaDriver> findAll() {
+    	return jPAApi.em().createQuery("SELECT d FROM JpaDriver d", JpaDriver.class).getResultList();
+    }
+
 
     @Override
     public JpaDriver find(String driverId) throws ResourceNotFound 
@@ -46,6 +59,16 @@ public class DefaultDriverService implements DriverService
     public void delete(String driverId) throws ResourceNotFound 
 	{
         jPAApi.em().detach(find(driverId));
+    }
+    
+    @Override
+    public JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound {
+    	
+    	JpaDriver driver = find(driverId);
+    	JpaCar car = carService.find(carId);
+    	
+    	driver.setCar(car);
+    	return driver;
     }
 
 }
