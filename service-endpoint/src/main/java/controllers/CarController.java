@@ -44,6 +44,19 @@ public class CarController extends Controller
     @Inject
     CarService carService;
 
+    @ApiOperation(value = "Find Cars", notes = "Find Car endpoint", httpMethod = "GET")
+    @ApiResponses
+	(
+            value = {
+						@ApiResponse(code = 200, message = "Done", response = CarDTO.class)
+					}
+    )
+    
+    public Result findCar() 
+	{
+           return ok(Json.toJson(carService.findAll().stream().map(CarMapper::jpaCarToCarDTO)));
+    }
+    
     @ApiOperation(value = "Get Car", notes = "Get Car endpoint", httpMethod = "GET")
     @ApiResponses
 	(
@@ -115,4 +128,24 @@ public class CarController extends Controller
             return notFound(ex.getMessage());
         }
     }
+    
+	@ApiOperation(value = "Update Car", notes = "Car Update endpoint", httpMethod = "PUT")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Updated") })
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Application", dataType = "com.encentral.test_project.commons.models.CarDTO", required = true, paramType = "body", value = "Application") })
+	public Result updateCar() {
+		Form<CarDTO> bindFromRequest = formFactory.form(CarDTO.class).bindFromRequest();
+		if (bindFromRequest.hasErrors()) {
+			return badRequest(bindFromRequest.errorsAsJson());
+
+		}
+		try {
+			JpaCar update = carService.update(CarMapper.carDTotoJpaCar(bindFromRequest.get()));
+			return ok(Json.toJson(CarMapper.jpaCarToCarDTO(update)));
+		} catch (ResourceNotFound ex) {
+			return notFound(ex.getMessage());
+		}
+	}
+
+
 }

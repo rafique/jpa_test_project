@@ -11,6 +11,7 @@ GET        /cars/:carId/               			controllers.CarController.getCar( carI
 DELETE     /cars/:carId/               			controllers.CarController.deleteCar( carId : String)
 PUT        /cars/               				controllers.CarController.updateCar()
 POST       /cars/                         		controllers.CarController.createCar()
+GET       /cars/                         		controllers.CarController.findCar()
 
 GET        /                                 	controllers.HomeController.index()
 

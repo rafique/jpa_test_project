@@ -1,12 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
 package com.encentral.test_project.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,115 +26,98 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "car")
 @XmlRootElement
-@NamedQueries
-({
-    @NamedQuery(name = "JpaCar.findAll", query = "SELECT j FROM JpaCar j")
-})
-public class JpaCar implements Serializable 
-{
-	
-	enum EngineType 
-	{ 
-		ELECTRIC, GAS
-	};
+@NamedQueries({ @NamedQuery(name = "JpaCar.findAll", query = "SELECT j FROM JpaCar j") })
+public class JpaCar implements Serializable {
 
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 64)
-    @Column(name = "car_id", nullable = false, length = 64)
-    private String carId;
+	@Id
+	@Basic(optional = false)
+	@NotNull
+	@Size(min = 1, max = 64)
+	@Column(name = "car_id", nullable = false, length = 64)
+	private String carId;
 
-    @Column(nullable = false, name = "license_plate")
-    @Size(min = 1, max = 25)
-    @NotNull(message = "License plate can not be null!")
-    private String licensePlate;
+	@Column(nullable = false)
+	@Size(min = 1, max = 25)
+	@NotNull(message = "Username can not be null!")
+	private String username;
 
-    @Column(nullable = false, name = "seat_count")
-    @NotNull(message = "Seat count can not be null!")
-    private int seatCount;
+	@Column(nullable = false)
+	@Size(min = 1, max = 255)
+	@NotNull(message = "Password can not be null!")
+	private String password;
 
-    @Column(nullable = false, name = "convertible")
-    @NotNull(message = "convertible field can not be null!")
-    private boolean convertible;
+	@Column(nullable = false, name = "online_status")
+	@NotNull(message = "online_status can not be null!")
+	@Size(min = 1, max = 10)
+	private String onlineStatus;
 
-    @Column(nullable = true, name = "rating")
-    private int rating;
-	
-	@Column(nullable = true, name = "engine_type")
-    private EngineType engineType;
-	
-	@Column(nullable = true, name = "manufacturer")
-    private String manufacturer;
+	@Column(nullable = false, name = "deleted")
+	private boolean deleted;
 
+	@Basic(optional = false)
+	@NotNull
+	@Column(name = "date_created", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateCreated;
 
-    public String getCarId() 
-	{
-        return carId;
-    }
+	@Column(name = "date_modified")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateModified;
 
-    public void setCarId(String carId) 
-	{
-        this.carId = carId;
-    }
+	public String getCarId() {
+		return carId;
+	}
 
-    public String getLicensePlate() 
-	{
-        return licensePlate;
-    }
+	public void setCarId(String carId) {
+		this.carId = carId;
+	}
 
-    public void setLicensePlate(String licensePlate) 
-	{
-        this.licensePlate = licensePlate;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public int getSeatCount() 
-	{
-        return seatCount;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setSeatCount(String seatCount) 
-	{
-        this.seatCount = seatCount;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public Boolean isConvertible() 
-	{
-        return convertible;
-    }
-	
-	public void setConvertible(String convertible) 
-	{
-        this.convertible = convertible;
-    }
-	
-	public String getRating() 
-	{
-        return rating;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setRating(String rating) 
-	{
-        this.rating = rating;
-    }
+	public Boolean getDeleted() {
+		return deleted;
+	}
 
-    public Date getEngineType() 
-	{
-        return engineType;
-    }
+	public String getOnlineStatus() {
+		return onlineStatus;
+	}
 
-    public void setEngineType(EngineType engineType) 
-	{
-        this.engineType = engineType;
-    }
+	public void setOnlineStatus(String onlineStatus) {
+		this.onlineStatus = onlineStatus;
+	}
 
-    public Date getManufacturer() 
-	{
-        return manufacturer;
-    }
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    public void setManufacturer(String manufacturer) 
-	{
-        this.manufacturer = manufacturer;
-    }
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public Date getDateModified() {
+		return dateModified;
+	}
+
+	public void setDateModified(Date dateModified) {
+		this.dateModified = dateModified;
+	}
+
 }
