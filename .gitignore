@@ -2,8 +2,9 @@ logs
 target
 /.idea
 /.idea_modules
-/.classpath
-/.project
-/.settings
+.classpath
+.project
+.settings
 /RUNNING_PID
 /.nb-play.properties
+
