@@ -16,9 +16,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import com.encentral.test_project.user_management.api.CarAlreadyInUseException;
 import com.encentral.test_project.user_management.api.DriverService;
 import javax.inject.Inject;
 import play.data.Form;
@@ -64,7 +66,11 @@ public class DriverController extends Controller
 		catch (ResourceNotFound ex) 
 		{
             return notFound(ex.getMessage());
-        }
+            
+        } catch (CarAlreadyInUseException e) {
+        	
+			return badRequest(e.getMessage());
+		}
     }
     
     @ApiOperation(value = "Find Drivers", notes = "Find Driver endpoint", httpMethod = "GET")
@@ -75,9 +81,9 @@ public class DriverController extends Controller
 					}
     )
     
-    public Result findDriver() 
+    public Result findDriver(@ApiParam(required = false) String username, String online_status, String license_plate, Integer rating) 
 	{
-           return ok(Json.toJson(driverService.findAll().stream().map(DriverMapper::jpaDriverToDriverDTO)));
+           return ok(Json.toJson(driverService.findDriver(username, online_status, license_plate, rating).stream().map(DriverMapper::jpaDriverToDriverDTO)));
     }
     
 

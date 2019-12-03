@@ -5,15 +5,21 @@
  */
 package com.encentral.test_project.user_management.impl;
 
-import com.encentral.test_project.commons.exceptions.ResourceNotFound;
-import com.encentral.test_project.entities.JpaCar;
-import com.encentral.test_project.entities.JpaDriver;
-import com.encentral.test_project.user_management.api.CarService;
-import com.encentral.test_project.user_management.api.DriverService;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.TypedQuery;
+
+import com.encentral.test_project.commons.exceptions.ResourceNotFound;
+import com.encentral.test_project.entities.JpaCar;
+import com.encentral.test_project.entities.JpaDriver;
+import com.encentral.test_project.user_management.api.CarAlreadyInUseException;
+import com.encentral.test_project.user_management.api.CarService;
+import com.encentral.test_project.user_management.api.DriverService;
+
 import play.db.jpa.JPAApi;
 
 /**
@@ -62,13 +68,52 @@ public class DefaultDriverService implements DriverService
     }
     
     @Override
-    public JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound {
+    public JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound, CarAlreadyInUseException {
     	
     	JpaDriver driver = find(driverId);
     	JpaCar car = carService.find(carId);
+    	
+    	if (car.getDriver() != null) {
+    		throw new CarAlreadyInUseException("the car "+carId +" is already assigned.");
+    	}
     	
     	driver.setCar(car);
     	return driver;
     }
 
+    @Override
+    public List<JpaDriver> findDriver(String username, String onlineStatus, String license_plate, Integer rating) {
+    	
+    	String query = "SELECT d FROM JpaDriver d where 1=1";
+    	List<Object> params = new LinkedList<>();
+    	
+    	if (username != null) {
+    		params.add(username);
+    		query += " and d.username = ?" + params.size();
+    	}
+    	if (onlineStatus != null) {
+    		params.add(onlineStatus);
+    		query += " and d.onlineStatus = ? " + + params.size();
+    	}
+    	
+    	//search on username until license plate is added
+    	if (license_plate != null) {
+    		params.add(license_plate);
+    		query += " and (d.car is not null and d.car.username = ?"+params.size() +")";
+    	}
+    	
+    	//search on password until rating is added
+    	if (rating != null) {
+    		params.add(rating);
+    		query += " and (d.car is not null and d.car.password = ?"+ params.size()+ ")";
+    	}
+    	
+		TypedQuery<JpaDriver> createQuery = jPAApi.em().createQuery(query, JpaDriver.class);
+		
+		for (int i = 0; i < params.size(); i++) {
+			createQuery.setParameter(i+1, params.get(i));
+		}
+		return createQuery.getResultList();
+    	
+    }
 }

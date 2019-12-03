@@ -33,8 +33,9 @@ public interface DriverService
      * @param carId
      * @return
      * @throws ResourceNotFound 
+     * @throws CarAlreadyInUseException 
      */
-	JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound;
+	JpaDriver assignCar(String driverId, String carId) throws ResourceNotFound, CarAlreadyInUseException;
 	
 	
 	/**
@@ -43,5 +44,17 @@ public interface DriverService
 	 * @return
 	 */
 	List<JpaDriver> findAll();
+
+	
+	/**
+	 * Finds driver by matching properties.
+	 * 
+	 * @param username
+	 * @param online_status
+	 * @param license_plate
+	 * @param rating
+	 * @return
+	 */
+	List<JpaDriver>  findDriver(String username, String online_status, String license_plate, Integer rating);
 
 }

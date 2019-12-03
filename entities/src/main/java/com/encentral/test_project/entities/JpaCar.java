@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,6 +64,17 @@ public class JpaCar implements Serializable {
 	@Column(name = "date_modified")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateModified;
+	
+	@OneToOne(mappedBy = "car")
+	private JpaDriver driver;
+	
+	public JpaDriver getDriver() {
+		return driver;
+	}
+	
+	public void setDriver(JpaDriver driver) {
+		this.driver = driver;
+	}
 
 	public String getCarId() {
 		return carId;
